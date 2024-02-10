@@ -18,7 +18,6 @@ if (process.env.NODE_ENV === 'development') {
 app.use(cors())
 app.use(express.json());
 app.use(express.static(`${__dirname}/public`));
-app.use(logger('dev'))
 
 app.use((req, res, next) => {
     req.requestTime = new Date().toISOString();
@@ -32,14 +31,15 @@ app.use('/api/v1/videos', videoRouter);
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/playlists', playlistRouter);
 
+// app.use(errorController)
+
 app.all('*', (req, res, next) => {
     const err = new AppError(`Cant't find ${req.originalUrl} on this server`, 404)
     next(err)
 })
 
-// app.use(errorController)
-
 app.use((err, req, res, next) => {
+    console.log(err)
     if (err.code === 11000) {
         res.status(409).json({
             status: 'failed',
@@ -47,8 +47,13 @@ app.use((err, req, res, next) => {
             err
         })
     }
+    res.status(400).json({
+        status: 'error',
+        message: err.message,
+    })
 
 })
+
 
 module.exports = app;
 

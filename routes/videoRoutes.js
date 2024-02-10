@@ -1,5 +1,6 @@
 const express = require('express')
 const videoController = require('./../controllers/videoController')
+const authController = require('./../controllers/authController')
 
 const router = express.Router()
 
@@ -9,10 +10,20 @@ router
     .get(videoController.getAllVideos)
     .post(videoController.createVideo)
 
+router.route('/:id/views')
+    .patch(videoController.incrementViews)
+
+router.route('/:id/like')
+    .patch(authController.isAuthenticated, videoController.like)
+
+router.route('/:id/dislike')
+    .patch(authController.isAuthenticated, videoController.dislike)
+
 router
     .route('/:id')
     .get(videoController.getVideo)
     .patch(videoController.updateVideo)
     .delete(videoController.deleteVideo)
+
 
 module.exports = router

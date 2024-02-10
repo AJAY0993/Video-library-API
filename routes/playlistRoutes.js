@@ -1,17 +1,18 @@
 const express = require('express')
 const playListController = require('../controllers/playlistController')
+const authController = require('../controllers/authController')
 const router = express.Router()
 
 router.route('/')
     .get(playListController.getAllPlaylists)
-    .post(playListController.createPlaylist)
+    .post(authController.isAuthenticated, playListController.createPlaylist)
 
 router.route('/:playlistId')
     .get(playListController.getPlaylistById)
     .delete(playListController.deletePlaylistById)
 
 router.route('/:playlistId/addVideo')
-    .patch(playListController.addVideoToPlaylist)
+    .patch(authController.isAuthenticated, playListController.addVideoToPlaylist)
 
 router.route('/:playlistId/removeVideo')
     .patch(playListController.removeVideoFromPlaylist)

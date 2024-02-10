@@ -28,6 +28,14 @@ const videoSchema = new Schema({
     thumb: {
         type: String,
         required: true,
+    },
+    cover: {
+        type: String,
+        default: 'no image'
+    },
+    image: {
+        type: String,
+        default: 'no image',
     }, uploadDate: {
         type: Date,
         default: Date.now
