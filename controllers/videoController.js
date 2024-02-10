@@ -33,15 +33,40 @@ const getAllVideos = async (req, res, next) => {
 
 const getGenres = (req, res, next) => {
     const genres = [
-        'Action',
-        'Drama',
-        'Animation',
-        'Fantasy',
-        'Horror',
-        'Comedy',
-        'Romance',
-        'Science-Fiction'
+        {
+            name: 'Action',
+            image: 'X8psFT0/action.jpg'
+        },
+        {
+            name: 'Drama',
+            image: 'L0XdQxp/drama.jpg'
+        },
+        {
+            name: 'Animation',
+            image: 'SxmLDPs/animation.jpg'
+        },
+        {
+            name: 'Fantasy',
+            image: 'FnfwrLH/fantasy.jpg'
+        },
+        {
+            name: 'Horror',
+            image: 'nRLKsBJ/horror.jpg'
+        },
+        {
+            name: 'Romance',
+            image: 'gwhs5vP/romance.jpg',
+        },
+        {
+            name: 'Science-Fiction',
+            image: 'qs00bsr/science-fiction.jpg'
+        },
+        {
+            name: 'Comedy',
+            image: '1QNZXtq/comedy.jpg'
+        }
     ]
+
     res.status(200).json({
         status: 'success',
         data: {
