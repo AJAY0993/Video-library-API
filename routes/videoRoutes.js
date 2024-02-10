@@ -10,6 +10,10 @@ router
     .get(videoController.getAllVideos)
     .post(videoController.createVideo)
 
+router
+    .route('/genres')
+    .get(videoController.getGenres)
+
 router.route('/:id/views')
     .patch(videoController.incrementViews)
 

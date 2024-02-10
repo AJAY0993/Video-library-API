@@ -31,6 +31,24 @@ const getAllVideos = async (req, res, next) => {
     }
 }
 
+const getGenres = (req, res, next) => {
+    const genres = [
+        'Action',
+        'Drama',
+        'Animation',
+        'Fantasy',
+        'Horror',
+        'Comedy',
+        'Romance',
+        'Science-Fiction'
+    ]
+    res.status(200).json({
+        status: 'success',
+        data: {
+            genres
+        }
+    })
+}
 const getVideo = async (req, res, next) => {
     try {
         const video = await Video.findById(req.params.id)
@@ -219,4 +237,4 @@ const dislike = async (req, res, next) => {
         next(err)
     }
 }
-module.exports = { getAllVideos, getVideo, createVideo, updateVideo, deleteVideo, incrementViews, like, dislike }
+module.exports = { getAllVideos, getGenres, getVideo, createVideo, updateVideo, deleteVideo, incrementViews, like, dislike }
