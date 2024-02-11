@@ -30,6 +30,10 @@ router
     .patch(authController.isAuthenticated, userController.clearHistory)
 
 router
+    .route('/history/remove')
+    .patch(authController.isAuthenticated, userController.removeHistory)
+
+router
     .route('/:id')
     .get(userController.getUser)
     .patch(userController.updateUser)

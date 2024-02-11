@@ -96,20 +96,21 @@ async function addVideoToPlaylist(req, res, next) {
 async function removeVideoFromPlaylist(req, res, next) {
     try {
         const playlistId = req.params.playlistId
-        const { videoId } = req.body
+        const { vidId } = req.body
 
         const playlist = await Playlist.findById(playlistId);
         if (!playlist) return next(new AppError('No Playlist found with that ID', 404));
 
-        const indexOfVid = playlist.videos.indexOf(videoId);
+        const indexOfVid = playlist.videos.indexOf(vidId);
 
         if (indexOfVid === -1) return next(new AppError('Video does not exist in the playlist'), 400);
 
-        playlist.videos = playlist.videos.filter(id => id != videoId)
-        await playlist.save()
+        playlist.videos = playlist.videos.filter(id => id != vidId)
+        await (await playlist.save()).populate('videos')
 
         res.status(201).json({
             status: 'success',
+            message: 'Video removed successfully',
             data: { playlist }
         });
     }

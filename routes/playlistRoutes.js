@@ -15,7 +15,7 @@ router.route('/:playlistId/addVideo')
     .patch(authController.isAuthenticated, playListController.addVideoToPlaylist)
 
 router.route('/:playlistId/removeVideo')
-    .patch(playListController.removeVideoFromPlaylist)
+    .patch(authController.isAuthenticated, playListController.removeVideoFromPlaylist)
 
 
 module.exports = router
