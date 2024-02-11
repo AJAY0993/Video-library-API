@@ -33,9 +33,9 @@ async function createPlaylist(req, res, next) {
 async function getPlaylistById(req, res, next) {
     try {
         const playlistId = req.params.playlistId
-        const userId = req.body.user.id
+        const userId = req.user.id
 
-        const playlist = await Playlist.find({ _id: playlistId, userid: userId }).populate('videos');
+        const playlist = await Playlist.findOne({ _id: playlistId, userid: userId }).populate('videos');
         if (!playlist) return next(new AppError('No Playlist found with that ID', 404));
 
         res.status(200).json({

@@ -8,7 +8,7 @@ router.route('/')
     .post(authController.isAuthenticated, playListController.createPlaylist)
 
 router.route('/:playlistId')
-    .get(playListController.getPlaylistById)
+    .get(authController.isAuthenticated, playListController.getPlaylistById)
     .delete(playListController.deletePlaylistById)
 
 router.route('/:playlistId/addVideo')
