@@ -4,17 +4,19 @@ const Playlist = require('../models/playlistModel')
 
 const getAllVideos = async (req, res, next) => {
     try {
+        console.log(req.query)
         const queryObj = { ...req.query }
-        const excludedFields = ['page', 'sort', 'limit']
+        const excludedFields = ['page', 'sort', 'limit', 'search']
         excludedFields.forEach(el => delete queryObj[el])
-        console.log(req.query, queryObj)
 
         //advanced filtering
         let queryStr = JSON.stringify(queryObj)
         queryStr = queryStr.replace(/\b(gte|gt|lt|lte)\b/g, match => `$${match}`)
 
         //build query
-        const query = Video.find(JSON.parse(queryStr))
+        const myQuery = JSON.parse(queryStr)
+        myQuery.name = { $regex: `.*${req.query.search || ''}.*`, $options: 'i' }
+        const query = Video.find(myQuery)
 
         //execute query
         const videos = await query
