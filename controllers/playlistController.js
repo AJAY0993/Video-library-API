@@ -70,8 +70,7 @@ async function deletePlaylistById(req, res, next) {
 
 async function addVideoToPlaylist(req, res, next) {
     try {
-        const playlistId = req.params.playlistId.trim()
-        const { videoId } = req.body
+        const { videoId, playlistId } = req.params
         const playlist = await Playlist.findById(playlistId);
         if (!playlist) return next(new AppError('No Playlist found with that ID', 404));
 

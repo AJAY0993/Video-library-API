@@ -77,7 +77,7 @@ const isAuthenticated = async (req, res, next) => {
 
 //Checking if User is Authorized or not
 const isAuthorized = (...roles) => {
-    (req, res, next) => {
+    return (req, res, next) => {
         if (roles.includes(req.user.role)) return next();
         new Error('You are authorized', 403)
     }

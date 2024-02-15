@@ -7,12 +7,14 @@ router.post('/signup', authController.signup)
 router.post('/login', authController.login)
 
 router
-    .route('/profile')
+    .route('/my/profile')
     .get(authController.isAuthenticated, userController.getUserProfile)
 
+
+
 router
-    .route('/playlists')
-    .get(authController.isAuthenticated, userController.getPlaylists)
+    .route('/liked')
+    .get(authController.isAuthenticated, userController.getLiked)
 
 router
     .route('/')
@@ -21,7 +23,7 @@ router
 
 router
     .route('/history')
-    .patch(authController.isAuthenticated, userController.updateHistory)
+    .patch(authController.isAuthenticated, userController.addVideoToHistory)
     .get(authController.isAuthenticated, userController.getHistory)
 
 
@@ -31,7 +33,7 @@ router
 
 router
     .route('/history/remove')
-    .patch(authController.isAuthenticated, userController.removeHistory)
+    .patch(authController.isAuthenticated, userController.removeVideoFromHistory)
 
 router
     .route('/:id')
@@ -39,5 +41,29 @@ router
     .patch(userController.updateUser)
     .delete(userController.deleteUser);
 
+
+router
+    .route('/my/playlists')
+    .get(authController.isAuthenticated, userController.getPlaylists)
+    .post(authController.isAuthenticated, userController.createPlaylist)
+
+router
+    .route('/my/playlists/:playlistId')
+    .get(authController.isAuthenticated, userController.getPlaylistById)
+    .delete(authController.isAuthenticated, userController.deletePlaylistById)
+
+router
+    .route('/my/playlists/:playlistId/videos/:videoId')
+    .patch(authController.isAuthenticated, userController.addVideoToPlaylist)
+    .delete(authController.isAuthenticated, userController.removeVideoFromPlaylist)
+
+router
+    .route('/my/watchLater')
+    .get(authController.isAuthenticated, userController.getWatchLater)
+
+router.
+    route('/my/watchLater/videos/:videoId')
+    .patch(authController.isAuthenticated, userController.addVideoToWatchLater)
+    .delete(authController.isAuthenticated, userController.removeVideoFromWatchLater)
 
 module.exports = router;

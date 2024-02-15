@@ -8,14 +8,13 @@ router.route('/')
     .post(authController.isAuthenticated, playListController.createPlaylist)
 
 router.route('/:playlistId')
-    .get(authController.isAuthenticated, playListController.getPlaylistById)
-    .delete(playListController.deletePlaylistById)
+    .get(playListController.getPlaylistById)
+    .delete(authController.isAuthorized('admin'), playListController.deletePlaylistById)
 
-router.route('/:playlistId/addVideo')
-    .patch(authController.isAuthenticated, playListController.addVideoToPlaylist)
+router.route('/:playlistId/videos/:videoId')
+    .patch(authController.isAuthorized('admin'), playListController.addVideoToPlaylist)
+    .delete(authController.isAuthorized('admin'), playListController.removeVideoFromPlaylist)
 
-router.route('/:playlistId/removeVideo')
-    .patch(authController.isAuthenticated, playListController.removeVideoFromPlaylist)
 
 
 module.exports = router
