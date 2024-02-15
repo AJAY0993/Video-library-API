@@ -66,4 +66,8 @@ router.
     .patch(authController.isAuthenticated, userController.addVideoToWatchLater)
     .delete(authController.isAuthenticated, userController.removeVideoFromWatchLater)
 
+router
+    .route('/my/liked')
+    .get(authController.isAuthenticated, userController.getLiked)
+
 module.exports = router;
