@@ -4,7 +4,8 @@ const Schema = mongoose.Schema
 const videoSchema = new Schema({
     name: {
         type: String,
-        required: [true, 'A video must have a name']
+        unique: true,
+        required: [true, 'A video must have a name'],
     },
     category: {
         type: String,
@@ -46,11 +47,11 @@ const videoSchema = new Schema({
     },
     likes: {
         type: Number,
-        default: Math.random() * 1000
+        default: Math.floor(Math.random() * 1000)
     },
     dislikes: {
         type: Number,
-        default: Math.random() * 100
+        default: Math.floor(Math.random() * 100)
     }
 });
 

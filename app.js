@@ -31,28 +31,13 @@ app.use('/api/v1/videos', videoRouter);
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/playlists', playlistRouter);
 
-// app.use(errorController)
-
+console.log(process.env.NODE_ENV)
 app.all('*', (req, res, next) => {
     const err = new AppError(`Cant't find ${req.originalUrl} on this server`, 404)
     next(err)
 })
 
-app.use((err, req, res, next) => {
-    console.log(err)
-    if (err.code === 11000) {
-        res.status(409).json({
-            status: 'failed',
-            message: `${Object.keys(err.keyValue).join(' ')} already exist`,
-            err
-        })
-    }
-    res.status(400).json({
-        status: 'error',
-        message: err.message,
-    })
-
-})
+app.use(errorController)
 
 
 module.exports = app;
