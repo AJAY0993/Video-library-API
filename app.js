@@ -5,6 +5,7 @@ const logger = require('morgan')
 const videoRouter = require('./routes/videoRoutes');
 const userRouter = require('./routes/userRoutes.js');
 const playlistRouter = require('./routes/playlistRoutes.js')
+const commentRouter = require('./routes/commentsRoutes.js')
 const AppError = require('./utils/appError.js');
 const errorController = require('./controllers/errorController.js');
 
@@ -30,6 +31,7 @@ app.use((req, res, next) => {
 app.use('/api/v1/videos', videoRouter);
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/playlists', playlistRouter);
+app.use('/api/v1/comments', commentRouter);
 
 console.log(process.env.NODE_ENV)
 app.all('*', (req, res, next) => {

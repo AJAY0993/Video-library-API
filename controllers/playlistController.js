@@ -4,7 +4,16 @@ const Playlist = require('../models/playlistModel')
 //index route for get request to read all playlist
 async function getAllPlaylists(req, res, next) {
     try {
-        const playlists = await Playlist.find().populate('videos')
+        let filter;
+        const userId = req.params.userId
+        const playlistName = req.query.playlistName
+        if (userId) {
+            filter = { userid: userId }
+        }
+        if (playlistName) {
+            filter.name = playlistName
+        }
+        const playlists = await Playlist.find(filter).populate('videos')
         res.status(200).json({
             status: 'success',
             data: { playlists }
@@ -70,8 +79,16 @@ async function deletePlaylistById(req, res, next) {
 
 async function addVideoToPlaylist(req, res, next) {
     try {
+        let playlist
+        const userId = req.user.id
         const { videoId, playlistId } = req.params
-        const playlist = await Playlist.findById(playlistId);
+        const playlistName = req.body.playlistName
+
+        //find playlist
+        if (playlistName) playlist = await Playlist.findOne({ name: playlistName, userid: userId })
+        else if (playlistId) playlist = await Playlist.findById(playlistId);
+
+
         if (!playlist) return next(new AppError('No Playlist found with that ID', 404));
 
         const indexOfVid = playlist.videos.indexOf(videoId);
@@ -94,17 +111,23 @@ async function addVideoToPlaylist(req, res, next) {
 
 async function removeVideoFromPlaylist(req, res, next) {
     try {
-        const playlistId = req.params.playlistId
-        const { vidId } = req.body
+        let playlist
+        const userId = req.user.id
+        const { videoId, playlistId } = req.params
+        const playlistName = req.body.playlistName
 
-        const playlist = await Playlist.findById(playlistId);
+        //find playlist
+        if (playlistName) playlist = await Playlist.findOne({ name: playlistName, userid: userId })
+        else if (playlistId) playlist = await Playlist.findById(playlistId);
+
+
         if (!playlist) return next(new AppError('No Playlist found with that ID', 404));
 
-        const indexOfVid = playlist.videos.indexOf(vidId);
+        const indexOfVid = playlist.videos.indexOf(videoId);
 
         if (indexOfVid === -1) return next(new AppError('Video does not exist in the playlist'), 400);
 
-        playlist.videos = playlist.videos.filter(id => id != vidId)
+        playlist.videos = playlist.videos.filter(id => id != videoId)
         await (await playlist.save()).populate('videos')
 
         res.status(201).json({

@@ -1,8 +1,9 @@
 const express = require('express')
 const videoController = require('./../controllers/videoController')
 const authController = require('./../controllers/authController')
+const commentRouter = require('./commentsRoutes')
 
-const router = express.Router()
+const router = express.Router({ mergeParams: true })
 
 
 router
@@ -22,6 +23,8 @@ router.route('/:id/like')
 
 router.route('/:id/dislike')
     .patch(authController.isAuthenticated, videoController.dislike)
+
+router.use('/:videoId/comments', commentRouter)
 
 router
     .route('/:id')

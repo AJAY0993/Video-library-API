@@ -1,7 +1,8 @@
 const express = require('express');
 const userController = require('./../controllers/userController');
 const authController = require('./../controllers/authController');
-const router = express.Router();
+const router = express.Router({ mergeParams: true });
+const playlistRouter = require('./playlistRoutes')
 
 router.post('/signup', authController.signup)
 router.post('/login', authController.login)
@@ -10,11 +11,6 @@ router
     .route('/my/profile')
     .get(authController.isAuthenticated, userController.getUserProfile)
 
-
-
-router
-    .route('/liked')
-    .get(authController.isAuthenticated, userController.getLiked)
 
 router
     .route('/')
@@ -42,32 +38,8 @@ router
     .delete(userController.deleteUser);
 
 
-router
-    .route('/my/playlists')
-    .get(authController.isAuthenticated, userController.getPlaylists)
-    .post(authController.isAuthenticated, userController.createPlaylist)
+router.use('/:userId/playlists', playlistRouter)
+router.use('/:userId/playlists/', playlistRouter)
 
-router
-    .route('/my/playlists/:playlistId')
-    .get(authController.isAuthenticated, userController.getPlaylistById)
-    .delete(authController.isAuthenticated, userController.deletePlaylistById)
-
-router
-    .route('/my/playlists/:playlistId/videos/:videoId')
-    .patch(authController.isAuthenticated, userController.addVideoToPlaylist)
-    .delete(authController.isAuthenticated, userController.removeVideoFromPlaylist)
-
-router
-    .route('/my/watchLater')
-    .get(authController.isAuthenticated, userController.getWatchLater)
-
-router.
-    route('/my/watchLater/videos/:videoId')
-    .patch(authController.isAuthenticated, userController.addVideoToWatchLater)
-    .delete(authController.isAuthenticated, userController.removeVideoFromWatchLater)
-
-router
-    .route('/my/liked')
-    .get(authController.isAuthenticated, userController.getLiked)
 
 module.exports = router;
