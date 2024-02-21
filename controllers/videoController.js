@@ -92,7 +92,7 @@ const createVideo = catchAsync(async (req, res, next) => {
     const video = await Video.create(req.body)
     const users = await User.find().select('firebaseToken')
     const tokens = users.filter(user => user.firebaseToken).map(user => user.firebaseToken)
-    sendNotificationToAllUsers(tokens, { title: 'New video', body: 'Vid Valut added new video to their collection' })
+    sendNotificationToAllUsers(tokens, { title: 'New video', body: 'Vid Valut added new video to their collection', image: video.thumb })
 
     res.status(201).json({
         status: 'success',

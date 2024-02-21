@@ -10,7 +10,7 @@ const sendNotificationToAllUsers = async (tokens, message) => {
         const promises = tokens.map(async token => {
             return await admin.messaging().send({
                 notification: {
-                    title: message.title, body: message.body
+                    title: message.title, body: message.body, image: message.image
                 }
                 , token
             })
