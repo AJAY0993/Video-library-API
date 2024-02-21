@@ -1,6 +1,7 @@
 const Playlist = require('../models/playlistModel');
 const User = require('../models/userModel');
 const AppError = require('../utils/appError');
+const catchAsync = require('../utils/catchAsync');
 
 
 const getUserProfile = async (req, res, next) => {
@@ -52,7 +53,22 @@ const deleteUser = (req, res) => {
     });
 };
 
-
+const updateUserProfile = catchAsync(async (req, res, next) => {
+    const userId = req.user.id
+    const { username, firebaseToken, email } = req.body
+    const updation = {}
+    if (username) updation.username = username
+    if (email) updation.email = email
+    if (firebaseToken) updation.firebaseToken = firebaseToken
+    const updatedUser = await User.findByIdAndUpdate(userId, updation, { new: true })
+    res.status(200).json({
+        status: 'success',
+        message: 'Profile updated successfully',
+        data: {
+            updatedUser
+        }
+    })
+})
 //history handlers
 const getHistory = async (req, res, next) => {
     const id = req.user.id
@@ -95,5 +111,5 @@ const clearHistory = async (req, res, next) => {
 }
 
 module.exports = {
-    getAllUsers, getUser, createUser, updateUser, deleteUser, getUserProfile, getHistory, addVideoToHistory, clearHistory, removeVideoFromHistory,
+    getAllUsers, getUser, createUser, updateUser, deleteUser, getUserProfile, updateUserProfile, getHistory, addVideoToHistory, clearHistory, removeVideoFromHistory,
 }

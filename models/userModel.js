@@ -3,6 +3,7 @@ const mongoose = require('mongoose')
 const bcrypt = require('bcryptjs')
 const { ObjectId } = require('mongodb')
 const Playlist = require('./playlistModel')
+
 const UserSchema = new mongoose.Schema({
     username: {
         type: String,
@@ -26,7 +27,7 @@ const UserSchema = new mongoose.Schema({
     role: {
         type: String,
         enum: ['user', 'admin']
-    }
+    }, firebaseToken: { type: String }
 })
 
 const defaultPlaylists = ['liked', 'disliked', 'watchLater']

@@ -1,7 +1,10 @@
 const AppError = require('../utils/appError')
 const Video = require('../models/videoModel')
 const Playlist = require('../models/playlistModel')
+const User = require('../models/userModel')
+
 const catchAsync = require('../utils/catchAsync')
+const { sendNotificationToAllUsers } = require('../utils/sendNotification')
 
 const getAllVideos = catchAsync(async (req, res, next) => {
     const queryObj = { ...req.query }
@@ -87,6 +90,10 @@ const getVideo = catchAsync(async (req, res, next) => {
 
 const createVideo = catchAsync(async (req, res, next) => {
     const video = await Video.create(req.body)
+    const users = await User.find().select('firebaseToken')
+    const tokens = users.filter(user => user.firebaseToken).map(user => user.firebaseToken)
+    sendNotificationToAllUsers(tokens, { title: 'New video', body: 'Vid Valut added new video to their collection' })
+
     res.status(201).json({
         status: 'success',
         data: {

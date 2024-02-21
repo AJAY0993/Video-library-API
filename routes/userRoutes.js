@@ -10,6 +10,7 @@ router.post('/login', authController.login)
 router
     .route('/my/profile')
     .get(authController.isAuthenticated, userController.getUserProfile)
+    .patch(authController.isAuthenticated, userController.updateUserProfile)
 
 
 router
