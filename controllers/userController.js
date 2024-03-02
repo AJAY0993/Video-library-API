@@ -1,5 +1,6 @@
 const Playlist = require('../models/playlistModel');
 const User = require('../models/userModel');
+const { findById } = require('../models/videoModel');
 const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
 
@@ -81,9 +82,9 @@ const getHistory = async (req, res, next) => {
 }
 
 const addVideoToHistory = async (req, res, next) => {
-    const { vidId } = req.body
-    await User.findByIdAndUpdate(req.user.id, { $pull: { history: vidId } })
-    const user = await User.findByIdAndUpdate(req.user.id, { $push: { history: vidId } }, { new: true }).populate('history')
+    const { videoId } = req.body
+    await User.findByIdAndUpdate(req.user.id, { $pull: { history: videoId } })
+    const user = await User.findByIdAndUpdate(req.user.id, { $push: { history: videoId } }, { new: true }).populate('history')
 
     res.status(200).json({
         status: 'success',
@@ -93,7 +94,8 @@ const addVideoToHistory = async (req, res, next) => {
 }
 
 const removeVideoFromHistory = async (req, res, next) => {
-    const user = await User.findByIdAndUpdate(req.user.id, { $pull: { history: req.body.vidId } }, { new: true }).populate('history')
+    console.log(req.body)
+    const user = await User.findByIdAndUpdate(req.user.id, { $pull: { history: req.body.videoId } }, { new: true }).populate('history')
     res.status(200).json({
         status: 'success',
         message: 'video removed successfully',

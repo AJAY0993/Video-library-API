@@ -9,10 +9,15 @@ const sendNotificationToAllUsers = async (tokens, message) => {
     try {
         const promises = tokens.map(async token => {
             return await admin.messaging().send({
-                notification: {
-                    title: message.title, body: message.body, image: message.image
+                token,
+                webpush: {
+                    data: {
+                        title: message.title,
+                        body: message.body,
+                        image: message.image,
+                        icon: 'https://png.pngtree.com/png-vector/20190215/ourmid/pngtree-play-video-icon-graphic-design-template-vector-png-image_530837.jpg'
+                    }
                 }
-                , token
             })
         })
         const res = await Promise.all(promises);

@@ -16,15 +16,21 @@ const getAllVideos = catchAsync(async (req, res, next) => {
     queryStr = queryStr.replace(/\b(gte|gt|lt|lte)\b/g, match => `$${match}`)
 
     //build query
+    const page = parseInt(req.query.page) || 1
+    const limit = parseInt(req.query.limit) || 12
+
+    const skip = (page - 1) * limit
     const myQuery = JSON.parse(queryStr)
     myQuery.name = { $regex: `.*${req.query.search || ''}.*`, $options: 'i' }
-    const query = Video.find(myQuery)
+    const query = Video.find(myQuery).skip(skip).limit(limit)
+
 
     //execute query
     const videos = await query
     res.status(200).json({
         status: 'success',
         requestedAt: req.requestTime,
+        page,
         results: videos.length,
         data: {
             videos,
