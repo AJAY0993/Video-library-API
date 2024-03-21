@@ -4,7 +4,7 @@
 This API provides functionality to manage a video library, allowing users to interact with videos, genres, comments, and user profiles. It facilitates operations such as viewing, liking, disliking videos, managing user profiles, creating playlists, and interacting with comments.
 
 ## Base URL
-- **Base URL**: `https://video-library-api-2-0.onrender.com/api/v1/videos`
+- **Base URL**: `https://video-library-api-2-0.onrender.com/api/v1/`
 
 ## Endpoints
 
